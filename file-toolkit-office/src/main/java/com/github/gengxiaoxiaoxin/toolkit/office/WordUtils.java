@@ -8,6 +8,7 @@ import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import javax.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,8 +18,9 @@ public class WordUtils {
 	
 	/**
 	 * replace the word variable
-	 * @param mappings mappings
-	 * @param inputStream inputStream
+	 *
+	 * @param mappings     mappings
+	 * @param inputStream  inputStream
 	 * @param outputStream outputStream
 	 * @throws JAXBException
 	 * @throws Docx4JException
@@ -40,6 +42,18 @@ public class WordUtils {
 		MainDocumentPart mainDocumentPart = wordMLPackage.getMainDocumentPart();
 		mainDocumentPart.variableReplace(mappings);
 		Docx4J.save(wordMLPackage, outputStream);
+	}
+	
+	/**
+	 * append Content
+	 *
+	 * @param dest   目标
+	 * @param source 源
+	 */
+	public static void appendContent(WordprocessingMLPackage dest, WordprocessingMLPackage source) {
+		List<Object> content = source.getMainDocumentPart().getContent();
+		MainDocumentPart destMainDocumentPart = dest.getMainDocumentPart();
+		content.forEach(destMainDocumentPart::addObject);
 	}
 	
 	
